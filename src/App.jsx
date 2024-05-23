@@ -32,8 +32,8 @@ function App() {
     }
 
     emailjs
-      .sendForm("service_ddqnnei", "template_sdhz7qp", form.current, {
-        publicKey: "KtUpucYToLCm1ikf0",
+      .sendForm("service_44mdivb", "template_18yyg38", form.current, {
+        publicKey: "I38CNoPxPsXFjETua",
       })
       .then(
         () => {
