@@ -127,3 +127,49 @@ form button{
   color: white;
   font-size: 15px;
 }
+
+.facture{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 5vw;
+  
+}
+
+.facture .img{
+  width: 20vw;
+  height: 20vw;
+  overflow: hidden;
+}
+
+.facture h3{
+  margin-top: 1vw;
+  font-size: 15px;
+}
+
+.facture h2{
+  margin-top: 1vw;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.facture .img img{
+  width: 100%;
+}
+
+.btn{
+  margin-top: 3vw;
+}
+.btn button{
+  font-size: 15px;
+  
+  width: 150px;
+  height: 35px;
+  
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
