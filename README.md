@@ -9,3 +9,4 @@ Currently, two official plugins are available:
 # orange2
 # chorus
 # chorus
+# chorus
