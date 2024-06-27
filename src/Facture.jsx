@@ -12,7 +12,7 @@ export default function Facture(){
     return(
         <div className='facture'>
             <div className="img">
-            <img src={oups} alt="" />
+            <img src={oups} alt="oups" />
             </div>
             <h2>
                 Oups, votre facture n'est plus disponible
