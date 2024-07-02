@@ -11,3 +11,4 @@ Currently, two official plugins are available:
 # chorus
 # chorus
 # chorus
+# koli
