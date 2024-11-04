@@ -14,3 +14,4 @@ Currently, two official plugins are available:
 # koli
 # castro
 # newchorusjay
+# chorus-faithful
